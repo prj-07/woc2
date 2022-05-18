@@ -36,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         progressDoalog = new ProgressDialog(MainActivity.this);
         progressDoalog.setMessage("Loading....");
         progressDoalog.show();
+        recyclerView = findViewById(R.id.recyler);
+        adapter = new MyAdapter(this, postlist);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<RetroPhoto>>() {
             @Override
             public void onResponse(Call<List<RetroPhoto>> call, Response<List<RetroPhoto>> response) {
-                progressDoalog.dismiss();
+              progressDoalog.dismiss();
                 generateDataList(response.body());
             }
 
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
             private void generateDataList(List<RetroPhoto> getPosts) {
                 recyclerView = findViewById(R.id.recyler);
-                adapter = new MyAdapter((Context) postlist);
+                adapter = new MyAdapter(this, postlist);
                 recyclerView.setHasFixedSize(true);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
                 recyclerView.setLayoutManager(layoutManager);
